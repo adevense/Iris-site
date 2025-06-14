@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
     import { page } from '$app/state';
     const publicRoutes = ['/Ordem-site', '/Ordem-site/registro']
+    console.log(page.route.id)
 
 	onMount(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
