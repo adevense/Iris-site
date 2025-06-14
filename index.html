@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard do Mestre</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- IMPORTANTE: Ajuste o href da tag base com o nome EXATO do seu repositório no GitHub Pages -->
+    <!-- Se for um site de usuário/organização (ex: seu-usuario.github.io), use <base href="/"> -->
+    <!-- Se for um site de projeto (ex: seu-usuario.github.io/meu-projeto/), use <base href="/meu-projeto/"> -->
+    <base href="/SEU_NOME_DO_REPOSITORIO/"> 
+    <link rel="stylesheet" href="/style.css">
     <!-- Adicionando Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -16,13 +20,13 @@
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li><a href="#" class="sidebar-link active" data-target="ficha-content"><i class="fas fa-scroll"></i> Ficha de Personagem</a></li>
-                    <li><a href="#" class="sidebar-link" data-target="notes-content"><i class="fas fa-sticky-note"></i> Minhas Anotações</a></li>
-                    <li><a href="#" class="sidebar-link" data-target="initiative-content"><i class="fas fa-dice-d20"></i> Controle de Iniciativa</a></li>
-                    <li><a href="#" class="sidebar-link" data-target="master-message-content"><i class="fas fa-envelope-open-text"></i> Mensagem para o Mestre</a></li>
-                    <li><a href="#" class="sidebar-link" data-target="session-summaries-content"><i class="fas fa-book-open"></i> Resumos de Sessão</a></li>
-                    <li id="adminSidebarLink" style="display: none;"><a href="#" class="sidebar-link" data-target="admin-content"><i class="fas fa-shield-alt"></i> Administração</a></li>
-                    <li><a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                    <li><a href="/index.html" class="sidebar-link active" data-target="ficha-content"><i class="fas fa-scroll"></i> Ficha de Personagem</a></li>
+                    <li><a href="/index.html" class="sidebar-link" data-target="notes-content"><i class="fas fa-sticky-note"></i> Minhas Anotações</a></li>
+                    <li><a href="/index.html" class="sidebar-link" data-target="initiative-content"><i class="fas fa-dice-d20"></i> Controle de Iniciativa</a></li>
+                    <li><a href="/index.html" class="sidebar-link" data-target="master-message-content"><i class="fas fa-envelope-open-text"></i> Mensagem para o Mestre</a></li>
+                    <li><a href="/index.html" class="sidebar-link" data-target="session-summaries-content"><i class="fas fa-book-open"></i> Resumos de Sessão</a></li>
+                    <li id="adminSidebarLink" style="display: none;"><a href="/index.html" class="sidebar-link" data-target="admin-content"><i class="fas fa-shield-alt"></i> Administração</a></li>
+                    <li><a href="/login.html" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                 </ul>
             </nav>
         </aside>
@@ -351,6 +355,6 @@
         </main>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script type="module" src="/script.js"></script>
 </body>
 </html>

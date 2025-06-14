@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - Meu Site</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- IMPORTANTE: Ajuste o href da tag base com o nome EXATO do seu repositório no GitHub Pages -->
+    <!-- Se for um site de usuário/organização (ex: seu-usuario.github.io), use <base href="/"> -->
+    <!-- Se for um site de projeto (ex: seu-usuario.github.io/meu-projeto/), use <base href="/meu-projeto/"> -->
+    <base href="/SEU_NOME_DO_REPOSITORIO/"> 
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div class="auth-container">
@@ -25,10 +29,9 @@
             <button type="submit">Registrar</button>
             <p class="error-message" id="signupErrorMessage"></p>
         </form>
-        <!-- A seção de registro social com o botão Google foi removida daqui -->
-        <p class="redirect-link">Já tem uma conta? <a href="login.html">Faça login aqui</a></p>
+        <p class="redirect-link">Já tem uma conta? <a href="/login.html">Faça login aqui</a></p>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script type="module" src="/script.js"></script>
 </body>
 </html>
