@@ -9,6 +9,21 @@
 		if (!timestamp) return '';
 		return new Date(timestamp).toLocaleString('pt-BR', { dateStyle: 'long', timeStyle: 'short' });
 	}
+
+	onMount(() => {
+        const summariesRef = collection(db, "sessionSummaries");
+        const q = query(summariesRef, orderBy("timestamp", "desc"));
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            let fetchedSummaries = [];
+            snapshot.forEach(doc => {
+                fetchedSummaries.push({ id: doc.id, ...doc.data() });
+            });
+            summaries = fetchedSummaries;
+        });
+
+        return () => unsubscribe();
+    });
 </script>
 
 <section id="session-summaries-content" class="content-section active">
