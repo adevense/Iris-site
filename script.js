@@ -129,7 +129,7 @@ if (window.location.pathname.includes('signup.html')) {
             hideMessage('signupErrorMessage');
 
             const email = signupForm['signupEmail'].value;
-            const password = signupForm['signupPassword'].value;
+            const password = signupForm['password'].value;
             const confirmPassword = signupForm['confirmPassword'].value;
 
             if (password !== confirmPassword) {
@@ -197,6 +197,9 @@ if (window.location.pathname.includes('index.html')) {
     const notesTextArea = document.getElementById('notesTextArea');
     const saveNoteButton = document.getElementById('saveNoteButton');
     const saveMessage = document.getElementById('saveMessage');
+    const displayNotesCampaignDate = document.getElementById('displayNotesCampaignDate'); // Novo elemento
+    const displayNotesCampaignTime = document.getElementById('displayNotesCampaignTime'); // Novo elemento
+
 
     // Elementos de Iniciativa
     const initiativeValueInput = document.getElementById('initiativeValue');
@@ -226,16 +229,9 @@ if (window.location.pathname.includes('index.html')) {
     const replyToSenderNameSpan = document.getElementById('replyToSenderName');
     const cancelReplyButton = document.getElementById('cancelReplyButton');
 
-    // Elementos para o novo controle de status da sessão
-    const sessionStatusDisplay = document.getElementById('sessionStatusDisplay');
-    const sessionIndicator = document.getElementById('sessionIndicator');
-    const sessionStatusText = document.getElementById('sessionStatusText');
-
     // Elementos para a nova aba de Administração
     const adminSidebarLink = document.getElementById('adminSidebarLink');
     const adminContentSection = document.getElementById('admin-content');
-    const sessionToggleButton = document.getElementById('sessionToggleButton');
-    const adminSessionStatusText = document.getElementById('adminSessionStatusText'); // Texto do status na aba admin
     const sessionSummaryTitleInput = document.getElementById('sessionSummaryTitle');
     const sessionSummaryContentInput = document.getElementById('sessionSummaryContent');
     const saveSessionSummaryButton = document.getElementById('saveSessionSummaryButton');
@@ -444,8 +440,11 @@ if (window.location.pathname.includes('index.html')) {
      */
     function renderPlayersAndCharacters(playersData) {
         playersCharactersList.innerHTML = '';
+        console.log("Iniciando renderPlayersAndCharacters. Dados recebidos:", playersData); // Log no início da função
+
         if (playersData.length === 0) {
             playersCharactersList.innerHTML = '<p style="text-align: center; color: #777;">Nenhum jogador/personagem encontrado.</p>';
+            console.log("playersData está vazio. Mensagem padrão exibida."); // Log se a lista estiver vazia
             return;
         }
 
@@ -467,7 +466,9 @@ if (window.location.pathname.includes('index.html')) {
                 <span>UID: ${player.userId}</span>
             `;
             playersCharactersList.appendChild(playerItemDiv);
+            console.log("Adicionado item de jogador/personagem ao DOM:", playerItemDiv.innerHTML); // Log de cada item
         });
+        console.log("Finalizado renderPlayersAndCharacters. HTML resultante:", playersCharactersList.innerHTML); // Log final do HTML gerado
     }
 
 
@@ -505,8 +506,10 @@ if (window.location.pathname.includes('index.html')) {
             if (adminSidebarLink) {
                 if (isAdmin) {
                     adminSidebarLink.style.display = 'block';
+                    console.log("Link de Administração visível.");
                 } else {
                     adminSidebarLink.style.display = 'none';
+                    console.log("Link de Administração oculto.");
                 }
             }
 
@@ -762,31 +765,58 @@ if (window.location.pathname.includes('index.html')) {
             // Lógica para Hora/Data da Campanha
             const campaignTimeDateDocRef = doc(db, "artifacts", appId, "public", "data", "campaignTimeDate", "current");
 
-            if (displayCampaignDate && displayCampaignTime) {
-                onSnapshot(campaignTimeDateDocRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        displayCampaignDate.textContent = data.campaignDate || 'Não definida';
-                        displayCampaignTime.textContent = data.campaignTime || 'Não definida';
-                        if (isAdmin) { // Apenas admin pode ver/preencher os inputs
-                            campaignDateInput.value = data.campaignDate || '';
-                            campaignTimeInput.value = data.campaignTime || '';
-                        }
-                        console.log("Hora/Data da campanha carregada:", data.campaignDate, data.campaignTime);
-                    } else {
-                        displayCampaignDate.textContent = 'Não definida';
-                        displayCampaignTime.textContent = 'Não definida';
-                        if (isAdmin) { // Apenas admin pode ver/preencher os inputs
-                            campaignDateInput.value = '';
-                            campaignTimeInput.value = '';
-                        }
-                        console.log("Hora/Data da campanha não definida.");
+            // Listener para a data/hora da campanha (para a seção de admin e para as anotações dos jogadores)
+            onSnapshot(campaignTimeDateDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const campaignDate = data.campaignDate || 'Não definida';
+                    const campaignTime = data.campaignTime || 'Não definida';
+
+                    // Atualiza os elementos na seção de admin (se existirem)
+                    if (displayCampaignDate) {
+                        displayCampaignDate.textContent = campaignDate;
                     }
-                }, (error) => {
-                    console.error("Erro ao carregar Hora/Data da campanha:", error);
-                    showMessage('timeDateMessage', 'Erro ao carregar Hora/Data. Verifique as suas regras de segurança.', true);
-                });
-            }
+                    if (displayCampaignTime) {
+                        displayCampaignTime.textContent = campaignTime;
+                    }
+                    
+                    // Atualiza os novos elementos na aba de anotações (displayNotesCampaignDate, displayNotesCampaignTime)
+                    if (displayNotesCampaignDate) {
+                        displayNotesCampaignDate.textContent = campaignDate;
+                    }
+                    if (displayNotesCampaignTime) {
+                        displayNotesCampaignTime.textContent = campaignTime;
+                    }
+
+                    if (isAdmin) { // Apenas admin pode ver/preencher os inputs
+                        if (campaignDateInput) campaignDateInput.value = data.campaignDate || '';
+                        if (campaignTimeInput) campaignTimeInput.value = data.campaignTime || '';
+                    }
+                    console.log("Hora/Data da campanha carregada:", campaignDate, campaignTime);
+                } else {
+                    // Define para "Não definida" se o documento não existir
+                    if (displayCampaignDate) displayCampaignDate.textContent = 'Não definida';
+                    if (displayCampaignTime) displayCampaignTime.textContent = 'Não definida';
+                    if (displayNotesCampaignDate) displayNotesCampaignDate.textContent = 'Não definida';
+                    if (displayNotesCampaignTime) displayNotesCampaignTime.textContent = 'Não definida';
+
+                    if (isAdmin) {
+                        if (campaignDateInput) campaignDateInput.value = '';
+                        if (campaignTimeInput) campaignTimeInput.value = '';
+                    }
+                    console.log("Hora/Data da campanha não definida.");
+                }
+            }, (error) => {
+                console.error("Erro ao carregar Hora/Data da campanha:", error);
+                showMessage('timeDateMessage', 'Erro ao carregar Hora/Data. Verifique as suas regras de segurança.', true);
+                if (displayNotesCampaignDate) {
+                    displayNotesCampaignDate.textContent = 'Erro ao carregar';
+                }
+                if (displayNotesCampaignTime) {
+                    displayNotesCampaignTime.textContent = 'Erro ao carregar';
+                }
+            });
+
 
             if (isAdmin && timeDateAdminSection) { // Seção de admin para hora/data
                 timeDateAdminSection.style.display = 'block'; 
@@ -986,75 +1016,6 @@ if (window.location.pathname.includes('index.html')) {
                 masterMessageAdminControls.style.display = 'none';
             }
 
-            // --- Lógica para o status da sessão (Nova Funcionalidade) ---
-            const campaignSessionRef = doc(db, "artifacts", appId, "public", "data", "campaignSession", "status");
-
-            // Listener para atualizar o status da sessão na UI
-            if (sessionStatusDisplay) {
-                onSnapshot(campaignSessionRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        const isActive = data.isSessionActive;
-                        sessionIndicator.classList.remove('active', 'inactive');
-                        sessionStatusText.textContent = isActive ? 'Sessão Ativa' : 'Sessão Inativa';
-                        if (isAdmin && adminSessionStatusText) { // Atualiza texto na aba admin
-                            adminSessionStatusText.textContent = isActive ? 'Sessão Ativa' : 'Sessão Inativa';
-                        }
-                        if (isActive) {
-                            sessionIndicator.classList.add('active');
-                            sessionIndicator.style.backgroundColor = '#28a745'; // Verde
-                        } else {
-                            sessionIndicator.classList.add('inactive');
-                            sessionIndicator.style.backgroundColor = '#dc3545'; // Vermelho
-                        }
-                        // Atualiza o estado do toggle apenas se for admin
-                        if (isAdmin && sessionToggleButton) {
-                            sessionToggleButton.checked = isActive;
-                        }
-                    } else {
-                        // Define um status padrão se o documento não existir
-                        sessionIndicator.classList.remove('active', 'inactive');
-                        sessionIndicator.classList.add('inactive');
-                        sessionIndicator.style.backgroundColor = '#dc3545'; // Vermelho
-                        sessionStatusText.textContent = 'Sessão Inativa';
-                        if (isAdmin && sessionToggleButton) {
-                            sessionToggleButton.checked = false;
-                        }
-                        if (isAdmin && adminSessionStatusText) {
-                            adminSessionStatusText.textContent = 'Sessão Inativa';
-                        }
-                    }
-                }, (error) => {
-                    console.error("Erro ao carregar status da sessão:", error);
-                    if (sessionStatusText) {
-                        sessionStatusText.textContent = 'Erro ao carregar status';
-                        sessionIndicator.style.backgroundColor = '#ffc107'; // Amarelo para erro
-                    }
-                    if (isAdmin && adminSessionStatusText) {
-                        adminSessionStatusText.textContent = 'Erro ao carregar status';
-                    }
-                });
-            }
-
-            // Event listener para o toggle de sessão (apenas para admins)
-            if (isAdmin && sessionToggleButton) {
-                sessionToggleButton.addEventListener('change', async (e) => {
-                    const newStatus = e.target.checked;
-                    try {
-                        await setDoc(campaignSessionRef, {
-                            isSessionActive: newStatus,
-                            lastUpdated: Date.now(),
-                            updatedBy: user.email || user.uid
-                        }, { merge: true });
-                        console.log(`Status da sessão atualizado para: ${newStatus}`);
-                    } catch (error) {
-                        console.error("Erro ao atualizar status da sessão:", error);
-                        // showMessage('adminSessionMessage', `Erro ao atualizar status: ${error.message}`, true); // Pode adicionar uma mensagem de feedback aqui
-                        alert(`Erro ao atualizar status da sessão: ${error.message}`); 
-                    }
-                });
-            }
-
             // --- Lógica para Resumos de Sessão (Nova Funcionalidade) ---
             const sessionSummariesCollectionRef = collection(db, "artifacts", appId, "public", "data", "sessionSummaries");
 
@@ -1107,12 +1068,23 @@ if (window.location.pathname.includes('index.html')) {
             // --- Lógica para Listar Jogadores e Personagens (apenas para admins) ---
             if (isAdmin && playersCharactersList) {
                 // Obtém todas as coleções 'characterSheets' de todos os utilizadores
+                // A query 'collectionGroup' precisa de um índice no Firestore.
+                // Se estiver a ter erros de 'missing index', crie um índice para 'characterSheets' no Firestore.
                 const allCharacterSheetsQuery = query(collectionGroup(db, 'characterSheets'));
                 
+                // Adicionando logs para depuração aqui
                 onSnapshot(allCharacterSheetsQuery, (snapshot) => {
+                    console.log("onSnapshot for allCharacterSheetsQuery triggered.");
+                    console.log("Snapshot size:", snapshot.size); // Quantos documentos foram encontrados
+                    
                     const playersData = [];
+                    if (snapshot.empty) {
+                        console.log("Snapshot is empty. No character sheets found.");
+                    }
                     snapshot.forEach(doc => {
                         const data = doc.data();
+                        console.log("Processing document:", doc.id, data); // Log de cada documento
+                        
                         // Certifica-se de que é um documento de ficha de personagem principal (mySheet)
                         // A estrutura esperada é users/{userId}/characterSheets/mySheet
                         // O path do doc será algo como artifacts/appId/users/UID_DO_USER/characterSheets/mySheet
@@ -1126,6 +1098,7 @@ if (window.location.pathname.includes('index.html')) {
                             nome: data.nome || 'N/A'
                         });
                     });
+                    console.log("Players Data prepared:", playersData); // Log dos dados preparados
                     renderPlayersAndCharacters(playersData);
                     console.log("Lista de jogadores e personagens atualizada.");
                 }, (error) => {
@@ -1139,42 +1112,63 @@ if (window.location.pathname.includes('index.html')) {
             sidebarLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-
-                    // Remove 'active' de todos os links e seções
-                    sidebarLinks.forEach(item => item.classList.remove('active'));
-                    contentSections.forEach(section => section.classList.remove('active'));
-
-                    // Adiciona 'active' ao link clicado
-                    e.target.classList.add('active');
-
-                    // Mostra a seção de conteúdo correspondente
                     const targetId = e.target.dataset.target;
-                    const targetSection = document.getElementById(targetId);
+                    console.log(`Link clicado: ${targetId}`);
 
+                    // Oculta todas as seções de conteúdo
+                    contentSections.forEach(section => {
+                        section.style.display = 'none';
+                        section.classList.remove('active'); // Remove a classe 'active' também
+                        console.log(`Ocultando seção: ${section.id}`);
+                    });
+                    
+                    // Remove a classe 'active' de todos os links da sidebar
+                    sidebarLinks.forEach(item => {
+                        item.classList.remove('active');
+                        console.log(`Removendo 'active' do link: ${item.dataset.target}`);
+                    });
+
+                    // Adiciona a classe 'active' ao link clicado
+                    e.target.classList.add('active');
+                    console.log(`Adicionando 'active' ao link: ${targetId}`);
+
+                    // Mostra a seção de conteúdo correspondente definindo display: 'block'
+                    const targetSection = document.getElementById(targetId);
                     if (targetSection) {
-                        targetSection.classList.add('active');
+                        targetSection.style.display = 'block';
+                        targetSection.classList.add('active'); // Adiciona a classe 'active' para estilos visuais
+                        console.log(`Mostrando seção: ${targetId}. Display definido para block.`);
+                    } else {
+                        console.warn(`Seção de conteúdo não encontrada para o target: ${targetId}`);
                     }
                 });
             });
 
-            // Ativa a primeira aba visível ao carregar a página
+            // Ativa a aba inicial ao carregar a página
             if (sidebarLinks.length > 0) {
                 // Se for admin, tenta ativar a aba de administração primeiro
                 if (isAdmin) {
                     const adminLink = document.querySelector('.sidebar-link[data-target="admin-content"]');
                     if (adminLink) {
-                        adminLink.click();
-                    } else { // Fallback para a ficha se o link admin não for encontrado (embora não deva acontecer)
+                        console.log("Tentando ativar a aba de Administração para admin.");
+                        // Dispara um clique para ativar o listener e mostrar a aba
+                        setTimeout(() => {
+                            adminLink.click();
+                        }, 100); 
+                    } else { 
+                        console.log("Link de Administração não encontrado. Ativando a aba de Ficha.");
                         const fichaLink = document.querySelector('.sidebar-link[data-target="ficha-content"]');
                         if (fichaLink) fichaLink.click();
                     }
                 } else {
                     // Se não for admin, tenta ativar a aba de ficha por padrão
+                    console.log("Não é admin. Ativando a aba de Ficha por padrão.");
                     const fichaLink = document.querySelector('.sidebar-link[data-target="ficha-content"]');
                     if (fichaLink) {
                         fichaLink.click();
                     } else {
                         // Se a ficha não existir ou não for a primeira, ative a primeira visível
+                        console.warn("Link de Ficha não encontrado. Ativando a primeira aba visível.");
                         const firstVisibleLink = Array.from(sidebarLinks).find(link => link.style.display !== 'none');
                         if (firstVisibleLink) {
                             firstVisibleLink.click();

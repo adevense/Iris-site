@@ -74,7 +74,7 @@ button {
     font-size: 1.1em; /* Texto maior no botão */
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     margin-top: 15px;
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Sombra para botões */
 }
@@ -243,23 +243,9 @@ button:active {
     background-color: #f9f9f9; /* Fundo levemente diferente */
 }
 
+/* Navbar */
 .navbar {
-    background-color: #ffffff;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #e0e0e0; /* Borda mais clara */
-    margin-bottom: 30px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Pequena sombra na barra superior */
-    border-radius: 8px; /* Cantos arredondados */
-    padding: 20px;
-    display: flex; /* Adicionado para alinhar o status da sessão */
-    justify-content: space-between; /* Para espaçar o título e o status */
-    align-items: center; /* Alinha verticalmente */
-}
-
-.navbar h1 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 2em;
+    display: none; /* ESCONDE COMPLETAMENTE A BARRA DE NAVEGAÇÃO SUPERIOR */
 }
 
 .main-content-area {
@@ -528,7 +514,7 @@ button:active {
 #saveSheetButton {
     background-color: #007bff;
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
-    margin-top: 20px;
+    margin-top: 20px; /* Adicionado um pouco de margem para separar do título da seção */
 }
 #saveSheetButton:hover {
     background-color: #0056b3;
@@ -544,8 +530,8 @@ button:active {
 
 /* ESTILOS PARA A GRADE DE PERÍCIAS */
 .pericias-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 2 colunas responsivas */
+    display: grid !important; /* Força a exibição como grade */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important; /* Colunas responsivas, min de 180px */
     gap: 10px 20px; /* Espaçamento entre linhas e colunas */
     margin-top: 10px;
 }
@@ -935,89 +921,6 @@ button:active {
     background-color: #c82333;
 }
 /* FIM DOS ESTILOS PARA MENSAGEM DIRETA */
-
-/* Estilos para o Status da Sessão no Navbar */
-.session-status-display {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    font-size: 0.95em;
-    color: #555;
-    background-color: #f0f0f0;
-    padding: 8px 15px;
-    border-radius: 20px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    width: fit-content;
-    margin-left: auto; /* Alinha à direita na navbar */
-}
-
-.session-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 8px;
-    border: 1px solid rgba(0,0,0,0.1); /* Borda sutil */
-}
-
-.session-indicator.active {
-    background-color: #28a745; /* Verde */
-}
-
-.session-indicator.inactive {
-    background-color: #dc3545; /* Vermelho */
-}
-
-/* Estilos para o Toggle Switch (para a página de Admin) */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-    margin-right: 10px;
-    vertical-align: middle; /* Alinha com o texto */
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px; /* Arredonda o slider */
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%; /* Arredonda o círculo */
-}
-
-input:checked + .slider {
-    background-color: #28a745; /* Verde quando ativo */
-}
-
-input:focus + .slider {
-    box-shadow: 0 0 1px #28a745;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px); /* Move o círculo para a direita */
-}
 
 /* Estilos para a Seção de Administração */
 #admin-content {
