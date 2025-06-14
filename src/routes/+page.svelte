@@ -12,7 +12,7 @@
         try {
             await setPersistence(auth, browserLocalPersistence);
             await signInWithEmailAndPassword(auth, email, password);
-            goto('/Ordem-site/dashboard'); 
+            goto('/Iris-site/dashboard'); 
         } catch (error) {
             console.error('Erro de login:', error.code);
             if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
@@ -38,7 +38,7 @@
         <button type="submit">Entrar</button>
         <p class="error-message" id="errorMessage">{errorMessage}</p>
     </form>
-    <p class="redirect-link">Não tem uma conta? <a href="/Ordem-site/registro">Cadastre-se aqui</a></p>
+    <p class="redirect-link">Não tem uma conta? <a href="/Iris-site/registro">Cadastre-se aqui</a></p>
 </div>
 
 <style>

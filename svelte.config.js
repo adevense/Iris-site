@@ -15,7 +15,7 @@ const config = {
         }),
 
         paths: {
-            base: process.env.NODE_ENV === 'production' ? '/Ordem-site' : ''
+            base: process.env.NODE_ENV === 'production' ? '/Iris-site' : ''
         }
     }
 };

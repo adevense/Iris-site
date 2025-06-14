@@ -37,7 +37,7 @@
 
 	async function handleLogout() {
 		await signOut(auth);
-		await goto('/Ordem-site');
+		await goto('/Iris-site');
 	}
 </script>
 

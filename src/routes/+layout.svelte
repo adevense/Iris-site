@@ -26,7 +26,7 @@
 
     $: {
         if ($userStore === null){
-            goto('/Ordem-site');
+            goto('/Iris-site');
         }
     }
 </script>

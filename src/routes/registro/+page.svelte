@@ -23,7 +23,7 @@
         try {
             await setPersistence(auth, browserLocalPersistence);
             await createUserWithEmailAndPassword(auth, email, password);
-            await goto('/Ordem-site/dashboard');
+            await goto('/Iris-site/dashboard');
 
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
@@ -78,7 +78,7 @@
 		<button type="submit">Registrar</button>
 		<p class="error-message" id="signupErrorMessage">{errorMessage}</p>
 	</form>
-	<p class="redirect-link">Já tem uma conta? <a href="/Ordem-site">Faça login aqui</a></p>
+	<p class="redirect-link">Já tem uma conta? <a href="/Iris-site">Faça login aqui</a></p>
 </div>
 
 <style>
