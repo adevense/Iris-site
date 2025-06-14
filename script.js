@@ -70,10 +70,11 @@ function hideMessage(elementId) {
     }
 }
 
-// --- Lógica de Login/Cadastro (inalterada para brevidade) ---
-if (window.location.pathname.includes('login.html')) {
+// --- Lógica de Login/Cadastro (index.html e signup.html) ---
+
+// Lógica para a NOVA página de Login (agora index.html)
+if (window.location.pathname.includes('index.html')) {
     const loginForm = document.getElementById('loginForm');
-    const googleLoginButton = document.getElementById('googleLogin');
 
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -86,7 +87,7 @@ if (window.location.pathname.includes('login.html')) {
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log('Utilizador logado com sucesso:', userCredential.user.email);
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html'; // Redireciona para o dashboard
             } catch (error) {
                 console.error('Erro ao fazer login:', error.code, error.message);
                 let userFriendlyMessage = 'Ocorreu um erro ao fazer login. Verifique o seu e-mail e palavra-passe.';
@@ -101,27 +102,18 @@ if (window.location.pathname.includes('login.html')) {
             }
         });
     }
-
-    if (googleLoginButton) {
-        googleLoginButton.addEventListener('click', async () => {
-            hideMessage('errorMessage');
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                console.log('Utilizador logado com Google:', result.user.email);
-                window.location.href = 'index.html';
-            } catch (error) {
-                console.error('Erro ao fazer login com Google:', error.code, error.message);
-                if (error.code !== 'auth/popup-closed-by-user') {
-                    showMessage('signupErrorMessage', 'Não foi possível fazer login com o Google. Tente novamente.', true);
-                }
-            }
-        });
-    }
+    // No index.html (login), se já estiver autenticado, redirecionar para dashboard
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log('Usuário já logado, redirecionando para dashboard.html');
+            window.location.href = 'dashboard.html';
+        }
+    });
 }
 
+// Lógica para a página de Cadastro (signup.html)
 if (window.location.pathname.includes('signup.html')) {
     const signupForm = document.getElementById('signupForm');
-    const googleSignupButton = document.getElementById('googleSignup');
 
     if (signupForm) {
         signupForm.addEventListener('submit', async (e) => {
@@ -144,7 +136,7 @@ if (window.location.pathname.includes('signup.html')) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 console.log('Utilizador registado com sucesso:', userCredential.user.email);
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html'; // Redireciona para o dashboard
             } catch (error) {
                 console.error('Erro ao registar:', error.code, error.message);
                 let userFriendlyMessage = 'Ocorreu um erro ao registar. Tente novamente.';
@@ -159,28 +151,13 @@ if (window.location.pathname.includes('signup.html')) {
             }
         });
     }
-
-    if (googleSignupButton) {
-        googleSignupButton.addEventListener('click', async () => {
-            hideMessage('signupErrorMessage');
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                console.log('Utilizador registado/logado com Google:', result.user.email);
-                window.location.href = 'index.html';
-            } catch (error) {
-                console.error('Erro ao registar com Google:', error.code, error.message);
-                if (error.code !== 'auth/popup-closed-by-user') {
-                    showMessage('signupErrorMessage', 'Não foi possível registar com o Google. Tente novamente.', true);
-                }
-            }
-        });
-    }
 }
 
 
-// --- Lógica para a Página Principal (index.html) ---
-if (window.location.pathname.includes('index.html')) {
+// --- Lógica para a NOVA Página Principal (dashboard.html) ---
+if (window.location.pathname.includes('dashboard.html')) {
     // Elementos da UI
+    const appContainer = document.querySelector('.app-container'); // Seleciona o container principal
     const userEmailElement = document.getElementById('userEmail'); // Pode ser nulo se não houver no HTML
     const sidebarUserName = document.getElementById('sidebarUserName');
     const logoutButton = document.getElementById('logoutButton');
@@ -475,6 +452,11 @@ if (window.location.pathname.includes('index.html')) {
     // --- Lógica de Autenticação e Carregamento de Dados ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
+            // Se o usuário está logado, exibe o container principal da aplicação
+            if (appContainer) {
+                appContainer.style.display = 'flex'; // ou 'block' se o layout permitir
+            }
+
             console.log('Utilizador logado:', user.email, 'UID:', user.uid);
             
             const userId = user.uid;
@@ -796,7 +778,7 @@ if (window.location.pathname.includes('index.html')) {
                 } else {
                     // Define para "Não definida" se o documento não existir
                     if (displayCampaignDate) displayCampaignDate.textContent = 'Não definida';
-                    if (displayCampaignTime) displayCampaignTime.textContent = 'Não definida';
+                    if (displayCampaignTime) displayCampaignDate.textContent = 'Não definida';
                     if (displayNotesCampaignDate) displayNotesCampaignDate.textContent = 'Não definida';
                     if (displayNotesCampaignTime) displayNotesCampaignTime.textContent = 'Não definida';
 
@@ -1180,7 +1162,7 @@ if (window.location.pathname.includes('index.html')) {
 
         } else {
             console.log('Nenhum utilizador logado. Redirecionando para login.');
-            window.location.href = 'login.html';
+            window.location.href = 'index.html'; // Redireciona para a nova página de login
         }
     });
 
@@ -1191,7 +1173,7 @@ if (window.location.pathname.includes('index.html')) {
             try {
                 await signOut(auth);
                 console.log('Utilizador deslogado com sucesso.');
-                window.location.href = 'login.html';
+                window.location.href = 'index.html'; // Redireciona para a nova página de login
             } catch (error) {
                 console.error('Erro ao fazer logout:', error);
                 alert('Ocorreu um erro ao fazer logout. Tente novamente.'); 

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Mestre</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Adicionando Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Olá, <span id="sidebarUserName">Aventureiro</span>!</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="sidebar-link active" data-target="ficha-content"><i class="fas fa-scroll"></i> Ficha de Personagem</a></li>
+                    <li><a href="dashboard.html" class="sidebar-link" data-target="notes-content"><i class="fas fa-sticky-note"></i> Minhas Anotações</a></li>
+                    <li><a href="dashboard.html" class="sidebar-link" data-target="initiative-content"><i class="fas fa-dice-d20"></i> Controle de Iniciativa</a></li>
+                    <li><a href="dashboard.html" class="sidebar-link" data-target="master-message-content"><i class="fas fa-envelope-open-text"></i> Mensagem para o Mestre</a></li>
+                    <li><a href="dashboard.html" class="sidebar-link" data-target="session-summaries-content"><i class="fas fa-book-open"></i> Resumos de Sessão</a></li>
+                    <li id="adminSidebarLink" style="display: none;"><a href="dashboard.html" class="sidebar-link" data-target="admin-content"><i class="fas fa-shield-alt"></i> Administração</a></li>
+                    <li><a href="index.html" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header class="navbar">
+                <!-- Título "Dashboard da Campanha" removido daqui -->
+            </header>
+
+            <!-- Seção Ficha de Personagem -->
+            <section id="ficha-content" class="content-section active">
+                <h2>Ficha de Personagem</h2>
+                <!-- Botão Salvar Ficha movido para o topo da seção -->
+                <button id="saveSheetButton">Salvar Ficha</button>
+                <p class="sheet-save-message" id="sheetSaveMessage"></p>
+
+                <div class="character-sheet-section">
+                    <h3>Informações Básicas</h3>
+                    <div class="input-group">
+                        <label for="fichaNome">Nome do Personagem:</label>
+                        <input type="text" id="fichaNome" placeholder="Ex: Sir Lancelot">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaNomePlayer">Nome do Jogador:</label>
+                        <input type="text" id="fichaNomePlayer" placeholder="Ex: Inácio">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaClasse">Classe:</label>
+                        <input type="text" id="fichaClasse" placeholder="Ex: Guerreiro">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaOrigem">Origem:</label>
+                        <input type="text" id="fichaOrigem" placeholder="Ex: Nobre">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaIdade">Idade:</label>
+                        <input type="number" id="fichaIdade" placeholder="Ex: 25">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaGenero">Gênero:</label>
+                        <input type="text" id="fichaGenero" placeholder="Ex: Masculino">
+                    </div>
+                </div>
+
+                <div class="character-sheet-section">
+                    <h3>Atributos</h3>
+                    <div class="input-group">
+                        <label for="fichaForca">Força:</label>
+                        <input type="number" id="fichaForca" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaAgilidade">Agilidade:</label>
+                        <input type="number" id="fichaAgilidade" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaVigor">Vigor:</label>
+                        <input type="number" id="fichaVigor" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaIntelecto">Intelecto:</label>
+                        <input type="number" id="fichaIntelecto" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaPresenca">Presença:</label>
+                        <input type="number" id="fichaPresenca" value="0">
+                    </div>
+                </div>
+
+                <div class="character-sheet-section">
+                    <h3>Pontos & NEX</h3>
+                    <div class="input-group">
+                        <label for="fichaPV">Pontos de Vida (PV):</label>
+                        <input type="text" id="fichaPV" placeholder="Atual/Máximo">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaPS">Pontos de Sanidade (PS):</label>
+                        <input type="text" id="fichaPS" placeholder="Atual/Máximo">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaPE">Pontos de Esforço (PE):</label>
+                        <input type="text" id="fichaPE" placeholder="Atual/Máximo">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaNEX">NEX (%):</label>
+                        <select id="fichaNEX">
+                            <option value="0">0%</option>
+                            <option value="5">5%</option>
+                            <option value="10">10%</option>
+                            <option value="15">15%</option>
+                            <option value="20">20%</option>
+                            <option value="25">25%</option>
+                            <option value="30">30%</option>
+                            <option value="35">35%</option>
+                            <option value="40">40%</option>
+                            <option value="45">45%</option>
+                            <option value="50">50%</option>
+                            <option value="55">55%</option>
+                            <option value="60">60%</option>
+                            <option value="65">65%</option>
+                            <option value="70">70%</option>
+                            <option value="75">75%</option>
+                            <option value="80">80%</option>
+                            <option value="85">85%</option>
+                            <option value="90">90%</option>
+                            <option value="95">95%</option>
+                            <option value="99">99%</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaResistenciasGerais">Resistências:</label>
+                        <input type="text" id="fichaResistenciasGerais" placeholder="Ex: Balístico 5, Corte 10">
+                    </div>
+                </div>
+
+                <div class="character-sheet-section">
+                    <h3>Perícias</h3>
+                    <div class="pericias-grid">
+                        <!-- Perícias serão preenchidas dinamicamente ou manualmente com inputs -->
+                        <div class="input-group"><label for="periciaAcrobacia">Acrobacia:</label><input type="number" id="periciaAcrobacia" value="0"></div>
+                        <div class="input-group"><label for="periciaAdestramento">Adestramento:</label><input type="number" id="periciaAdestramento" value="0"></div>
+                        <div class="input-group"><label for="periciaArtes">Artes:</label><input type="number" id="periciaArtes" value="0"></div>
+                        <div class="input-group"><label for="periciaAtletismo">Atletismo:</label><input type="number" id="periciaAtletismo" value="0"></div>
+                        <div class="input-group"><label for="periciaAtualidades">Atualidades:</label><input type="number" id="periciaAtualidades" value="0"></div>
+                        <div class="input-group"><label for="periciaCiencias">Ciências:</label><input type="number" id="periciaCiencias" value="0"></div>
+                        <div class="input-group"><label for="periciaCrime">Crime:</label><input type="number" id="periciaCrime" value="0"></div>
+                        <div class="input-group"><label for="periciaDiplomacia">Diplomacia:</label><input type="number" id="periciaDiplomacia" value="0"></div>
+                        <div class="input-group"><label for="periciaEnganacao">Enganação:</label><input type="number" id="periciaEnganacao" value="0"></div>
+                        <div class="input-group"><label for="periciaFortitude">Fortitude:</label><input type="number" id="periciaFortitude" value="0"></div>
+                        <div class="input-group"><label for="periciaFurtividade">Furtividade:</label><input type="number" id="periciaFurtividade" value="0"></div>
+                        <div class="input-group"><label for="periciaIniciativa">Iniciativa:</label><input type="number" id="periciaIniciativa" value="0"></div>
+                        <div class="input-group"><label for="periciaIntimidacao">Intimidação:</label><input type="number" id="periciaIntimidacao" value="0"></div>
+                        <div class="input-group"><label for="periciaIntuicao">Intuição:</label><input type="number" id="periciaIntuicao" value="0"></div>
+                        <div class="input-group"><label for="periciaInvestigacao">Investigação:</label><input type="number" id="periciaInvestigacao" value="0"></div>
+                        <div class="input-group"><label for="periciaLuta">Luta:</label><input type="number" id="periciaLuta" value="0"></div>
+                        <div class="input-group"><label for="periciaMedicina">Medicina:</label><input type="number" id="periciaMedicina" value="0"></div>
+                        <div class="input-group"><label for="periciaOcultismo">Ocultismo:</label><input type="number" id="periciaOcultismo" value="0"></div>
+                        <div class="input-group"><label for="periciaPercepcao">Percepção:</label><input type="number" id="periciaPercepcao" value="0"></div>
+                        <div class="input-group"><label for="periciaPilotagem">Pilotagem:</label><input type="number" id="periciaPilotagem" value="0"></div>
+                        <div class="input-group"><label for="periciaPontaria">Pontaria:</label><input type="number" id="periciaPontaria" value="0"></div>
+                        <div class="input-group"><label for="periciaProfissao">Profissão:</label><input type="number" id="periciaProfissao" value="0"></div>
+                        <div class="input-group"><label for="periciaReflexos">Reflexos:</label><input type="number" id="periciaReflexos" value="0"></div>
+                        <div class="input-group"><label for="periciaReligiao">Religião:</label><input type="number" id="periciaReligiao" value="0"></div>
+                        <div class="input-group"><label for="periciaSobrevivencia">Sobrevivência:</label><input type="number" id="periciaSobrevivencia" value="0"></div>
+                        <div class="input-group"><label for="periciaTatica">Tática:</label><input type="number" id="periciaTatica" value="0"></div>
+                        <div class="input-group"><label for="periciaTecnologia">Tecnologia:</label><input type="number" id="periciaTecnologia" value="0"></div>
+                        <div class="input-group"><label for="periciaVontade">Vontade:</label><input type="number" id="periciaVontade" value="0"></div>
+                    </div>
+                </div>
+
+                <div class="character-sheet-section full-width">
+                    <h3>Habilidades e Rituais/Poderes</h3>
+                    <div class="input-group">
+                        <label for="fichaHabilidades">Habilidades:</label>
+                        <textarea id="fichaHabilidades" placeholder="Descreva suas habilidades e talentos aqui..."></textarea>
+                    </div>
+                    <h4>Rituais/Poderes Conhecidos</h4>
+                    <div id="rituaisListContainer" class="scrollable-content">
+                        <!-- Rituais serão adicionados aqui pelo JS -->
+                    </div>
+                    <button id="addRitualButton">Adicionar Ritual/Poder</button>
+                </div>
+
+                <div class="character-sheet-section full-width">
+                    <h3>Inventário e Equipamentos</h3>
+                    <div class="input-group">
+                        <label for="fichaEquipamentos">Equipamentos:</label>
+                        <textarea id="fichaEquipamentos" placeholder="Lista de equipamentos (armas, armaduras, itens)..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaDinheiro">Dinheiro:</label>
+                        <input type="text" id="fichaDinheiro" placeholder="Ex: 50 Tibares de Ouro">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaLimiteInventario">Limite de Inventário:</label>
+                        <input type="text" id="fichaLimiteInventario" placeholder="Ex: 5/10 (espaços, peso, etc.)">
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaClasseItens">Classe de Itens:</label>
+                        <input type="text" id="fichaClasseItens" placeholder="Ex: I, II, III (para itens amaldiçoados)">
+                    </div>
+                </div>
+
+                <div class="character-sheet-section full-width">
+                    <h3>Aparência e História</h3>
+                    <div class="input-group">
+                        <label for="fichaApariencia">Aparência:</label>
+                        <textarea id="fichaApariencia" placeholder="Descreva a aparência física do seu personagem..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="fichaHistoria">História:</label>
+                        <textarea id="fichaHistoria" placeholder="Conte a história do seu personagem, seu passado, motivações..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Minhas Anotações -->
+            <section id="notes-content" class="content-section">
+                <h2>Minhas Anotações</h2>
+                <div class="main-content-area">
+                    <p>Use este espaço para suas anotações pessoais da campanha.</p>
+                    <!-- Nova seção para exibir Hora e Data da Campanha nas anotações -->
+                    <div class="current-time-display">
+                        <p>Data Atual na Campanha: <strong id="displayNotesCampaignDate">Não definida</strong></p>
+                        <p>Hora Atual na Campanha: <strong id="displayNotesCampaignTime">Não definida</strong></p>
+                    </div>
+                    <textarea id="notesTextArea" placeholder="Comece a escrever suas anotações aqui..."></textarea>
+                    <button id="saveNoteButton">Salvar Anotações</button>
+                    <p class="save-message" id="saveMessage"></p>
+                </div>
+            </section>
+
+            <!-- Seção Controle de Iniciativa -->
+            <section id="initiative-content" class="content-section">
+                <h2>Controle de Iniciativa</h2>
+                <div class="main-content-area">
+                    <p>Adicione seu valor de iniciativa e acompanhe a ordem.</p>
+                    <div class="initiative-controls">
+                        <div class="input-group">
+                            <label for="initiativeValue">Meu Valor de Iniciativa:</label>
+                            <input type="number" id="initiativeValue" placeholder="Ex: 15">
+                        </div>
+                        <button id="addInitiativeButton">Adicionar/Atualizar Minha Iniciativa</button>
+                    </div>
+                    <p class="error-message" id="adminMessage"></p> <!-- Usado para mensagens de iniciativa também -->
+
+                    <h3>Ordem da Iniciativa</h3>
+                    <div id="initiativeListContainer" class="initiative-list-container">
+                        <p style="text-align: center; color: #777;">Nenhuma iniciativa adicionada ainda.</p>
+                    </div>
+
+                    <div id="adminControls" class="admin-controls">
+                        <h3>Controles do Mestre (Iniciativa)</h3>
+                        <button id="clearInitiativeButton">Limpar Todas as Iniciativas</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Mensagem para o Mestre -->
+            <section id="master-message-content" class="content-section">
+                <h2>Mensagem Direta para o Mestre</h2>
+                <div class="main-content-area">
+                    <p>Envie uma mensagem particular ao Mestre.</p>
+                    <div class="master-message-input-area">
+                        <div id="replyingToMessage" class="reply-context" style="display: none;">
+                            A responder a: <span id="replyToSenderName"></span>
+                            <button id="cancelReplyButton"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="master-message-input-wrapper">
+                            <textarea id="masterMessageInput" placeholder="Escreva sua mensagem aqui..."></textarea>
+                            <button id="sendMasterMessageButton">Enviar Mensagem</button>
+                        </div>
+                        <p class="save-message" id="masterMessageFeedback"></p>
+                    </div>
+
+                    <h3>Minhas Mensagens e Respostas do Mestre</h3>
+                    <div id="masterMessagesDisplay" class="master-messages-display-container">
+                        <p style="text-align: center; color: #777;">Nenhuma mensagem ainda.</p>
+                    </div>
+                    <div id="masterMessageAdminControls" class="admin-controls">
+                        <h3>Controles do Mestre (Mensagens)</h3>
+                        <button id="clearMasterMessagesButton">Limpar Todas as Mensagens</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Resumos de Sessão -->
+            <section id="session-summaries-content" class="content-section">
+                <h2>Resumos de Sessão</h2>
+                <div class="main-content-area">
+                    <p>Aqui você pode ver os resumos das sessões anteriores.</p>
+                    <div id="sessionSummariesList" class="session-summaries-list">
+                        <p style="text-align: center; color: #777;">Nenhum resumo de sessão disponível ainda.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Administração (Apenas para o Mestre) -->
+            <section id="admin-content" class="content-section">
+                <h2>Área de Administração</h2>
+                <div class="admin-section-item">
+                    <h3>Hora e Data da Campanha</h3>
+                    <p>Defina a data e hora atual do mundo da campanha.</p>
+                    <div class="current-time-display">
+                        <p>Data Atual na Campanha: <strong id="displayCampaignDate">Não definida</strong></p>
+                        <p>Hora Atual na Campanha: <strong id="displayCampaignTime">Não definida</strong></p>
+                    </div>
+                    <div id="timeDateAdminSection" class="admin-section-time-date">
+                        <div class="time-date-controls">
+                            <div class="input-group">
+                                <label for="campaignDateInput">Definir Data:</label>
+                                <input type="date" id="campaignDateInput">
+                            </div>
+                            <div class="input-group">
+                                <label for="campaignTimeInput">Definir Hora:</label>
+                                <input type="time" id="campaignTimeInput">
+                            </div>
+                        </div>
+                        <button id="saveTimeDateButton">Salvar Hora/Data da Campanha</button>
+                        <p class="save-message" id="timeDateMessage"></p>
+                    </div>
+                </div>
+                
+                <div class="admin-section-item">
+                    <h3>Resumos de Sessão (Mestre)</h3>
+                    <p>Publique um novo resumo de sessão para os jogadores.</p>
+                    <div class="input-group">
+                        <label for="sessionSummaryTitle">Título do Resumo:</label>
+                        <input type="text" id="sessionSummaryTitle" placeholder="Ex: Sessão #3 - A Cidade Subterrânea">
+                    </div>
+                    <div class="input-group">
+                        <label for="sessionSummaryContent">Conteúdo do Resumo:</label>
+                        <textarea id="sessionSummaryContent" placeholder="Detalhes importantes da última sessão..."></textarea>
+                    </div>
+                    <button id="saveSessionSummaryButton">Publicar Resumo de Sessão</button>
+                    <p class="save-message" id="sessionSummaryMessage"></p>
+                </div>
+
+                <div class="admin-section-item">
+                    <h3>Jogadores e Personagens</h3>
+                    <p>Visualize os jogadores e seus personagens registados.</p>
+                    <div id="playersCharactersList">
+                        <p style="text-align: center; color: #777;">Carregando...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
