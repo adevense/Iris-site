@@ -141,7 +141,7 @@ button:active {
 
 /* Estilos da Página Principal (Dashboard) */
 .app-container {
-    display: flex;
+    display: none; /* Alterado: Esconde o container da app por padrão */
     width: 100%;
     max-width: 1400px; /* Largura máxima maior */
     min-height: 90vh;
@@ -713,7 +713,7 @@ button:active {
 }
 
 .initiative-item:last-child {
-    border-bottom: none; /* Remove borda do último item */
+    border-bottom: none;
 }
 
 .initiative-item strong {
