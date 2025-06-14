@@ -44,6 +44,27 @@ const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
 
+// Função para obter o basename do URL (nome do repositório no GitHub Pages)
+// Ex: Se o URL for https://usuario.github.io/meu-repositorio/index.html
+// Retorna /meu-repositorio/
+function getBasename() {
+    // Isso assume que o repositório é o primeiro segmento do path depois da raiz
+    // Ex: /meu-repositorio/index.html -> /meu-repositorio/
+    // Se estiver na raiz (seu-usuario.github.io), retorna ""
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(p => p.length > 0);
+    if (parts.length > 0 && !path.includes('.html')) { // Verifica se não é um arquivo direto e tem segmentos
+        return `/${parts[0]}/`;
+    }
+    // Se for um arquivo direto (ex: /index.html) ou raiz do domínio (seu-usuario.github.io)
+    // Retorna a raiz ou vazio
+    return path.includes('.html') ? path.substring(0, path.lastIndexOf('/') + 1) : '/';
+}
+
+const basename = getBasename();
+console.log("Basename detectado:", basename);
+
+
 /**
  * Exibe uma mensagem de feedback na interface.
  * @param {string} elementId O ID do elemento onde a mensagem será exibida.
@@ -73,7 +94,7 @@ function hideMessage(elementId) {
 // --- Lógica de Login/Cadastro (index.html e signup.html) ---
 
 // Lógica para a NOVA página de Login (agora index.html)
-if (window.location.pathname.includes('index.html')) {
+if (window.location.pathname.includes('index.html') && !window.location.pathname.includes('signup.html')) {
     const loginForm = document.getElementById('loginForm');
 
     if (loginForm) {
@@ -87,7 +108,7 @@ if (window.location.pathname.includes('index.html')) {
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log('Utilizador logado com sucesso:', userCredential.user.email);
-                window.location.href = 'dashboard.html'; // Redireciona para o dashboard
+                window.location.href = window.location.origin + basename + 'dashboard.html'; // Redireciona para o dashboard
             } catch (error) {
                 console.error('Erro ao fazer login:', error.code, error.message);
                 let userFriendlyMessage = 'Ocorreu um erro ao fazer login. Verifique o seu e-mail e palavra-passe.';
@@ -106,7 +127,7 @@ if (window.location.pathname.includes('index.html')) {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             console.log('Usuário já logado, redirecionando para dashboard.html');
-            window.location.href = 'dashboard.html';
+            window.location.href = window.location.origin + basename + 'dashboard.html';
         }
     });
 }
@@ -136,7 +157,7 @@ if (window.location.pathname.includes('signup.html')) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 console.log('Utilizador registado com sucesso:', userCredential.user.email);
-                window.location.href = 'dashboard.html'; // Redireciona para o dashboard
+                window.location.href = window.location.origin + basename + 'dashboard.html'; // Redireciona para o dashboard
             } catch (error) {
                 console.error('Erro ao registar:', error.code, error.message);
                 let userFriendlyMessage = 'Ocorreu um erro ao registar. Tente novamente.';
@@ -1162,7 +1183,7 @@ if (window.location.pathname.includes('dashboard.html')) {
 
         } else {
             console.log('Nenhum utilizador logado. Redirecionando para login.');
-            window.location.href = 'index.html'; // Redireciona para a nova página de login
+            window.location.href = window.location.origin + basename + 'index.html'; // Redireciona para a nova página de login
         }
     });
 
@@ -1173,7 +1194,7 @@ if (window.location.pathname.includes('dashboard.html')) {
             try {
                 await signOut(auth);
                 console.log('Utilizador deslogado com sucesso.');
-                window.location.href = 'index.html'; // Redireciona para a nova página de login
+                window.location.href = window.location.origin + basename + 'index.html'; // Redireciona para a nova página de login
             } catch (error) {
                 console.error('Erro ao fazer logout:', error);
                 alert('Ocorreu um erro ao fazer logout. Tente novamente.'); 
