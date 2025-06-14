@@ -108,7 +108,9 @@ if (window.location.pathname.includes('index.html') && !window.location.pathname
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log('Utilizador logado com sucesso:', userCredential.user.email);
-                window.location.href = window.location.origin + basename + 'dashboard.html'; // Redireciona para o dashboard
+                const redirectUrl = window.location.origin + basename + 'dashboard.html';
+                console.log('Redirecionando para:', redirectUrl);
+                window.location.href = redirectUrl; // Redireciona para o dashboard
             } catch (error) {
                 console.error('Erro ao fazer login:', error.code, error.message);
                 let userFriendlyMessage = 'Ocorreu um erro ao fazer login. Verifique o seu e-mail e palavra-passe.';
@@ -127,7 +129,9 @@ if (window.location.pathname.includes('index.html') && !window.location.pathname
     onAuthStateChanged(auth, (user) => {
         if (user) {
             console.log('Usuário já logado, redirecionando para dashboard.html');
-            window.location.href = window.location.origin + basename + 'dashboard.html';
+            const redirectUrl = window.location.origin + basename + 'dashboard.html';
+            console.log('Redirecionando para:', redirectUrl);
+            window.location.href = redirectUrl;
         }
     });
 }
@@ -157,7 +161,9 @@ if (window.location.pathname.includes('signup.html')) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 console.log('Utilizador registado com sucesso:', userCredential.user.email);
-                window.location.href = window.location.origin + basename + 'dashboard.html'; // Redireciona para o dashboard
+                const redirectUrl = window.location.origin + basename + 'dashboard.html';
+                console.log('Redirecionando para:', redirectUrl);
+                window.location.href = redirectUrl; // Redireciona para o dashboard
             } catch (error) {
                 console.error('Erro ao registar:', error.code, error.message);
                 let userFriendlyMessage = 'Ocorreu um erro ao registar. Tente novamente.';
@@ -1183,7 +1189,9 @@ if (window.location.pathname.includes('dashboard.html')) {
 
         } else {
             console.log('Nenhum utilizador logado. Redirecionando para login.');
-            window.location.href = window.location.origin + basename + 'index.html'; // Redireciona para a nova página de login
+            const redirectUrl = window.location.origin + basename + 'index.html';
+            console.log('Redirecionando para:', redirectUrl);
+            window.location.href = redirectUrl; // Redireciona para a nova página de login
         }
     });
 
@@ -1194,7 +1202,9 @@ if (window.location.pathname.includes('dashboard.html')) {
             try {
                 await signOut(auth);
                 console.log('Utilizador deslogado com sucesso.');
-                window.location.href = window.location.origin + basename + 'index.html'; // Redireciona para a nova página de login
+                const redirectUrl = window.location.origin + basename + 'index.html';
+                console.log('Redirecionando para:', redirectUrl);
+                window.location.href = redirectUrl; // Redireciona para a nova página de login
             } catch (error) {
                 console.error('Erro ao fazer logout:', error);
                 alert('Ocorreu um erro ao fazer logout. Tente novamente.'); 
