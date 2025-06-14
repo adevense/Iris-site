@@ -177,7 +177,7 @@
 						<p>{msg.message}</p>
 						<div class="timestamp">{formatTimestamp(msg.timestamp)}</div>
 
-						{#if isAdmin && msg.senderId !== userId}
+						{#if isAdmin && msg.senderId != userId}
 							<button class="reply-button" on:click={() => startReply(msg)}>Responder</button>
 						{/if}
 					</div>
