@@ -18,6 +18,7 @@
 
 	onMount(async () => {
 		let unsubscribeListener = null;
+		let unsubscribeListener = null;
 		try {
 			const user = $userStore;
 			const adminDocRef = doc(db, 'adminUsers', user.uid);
@@ -30,6 +31,7 @@
 				userName = sheetDoc.data().nomePlayer;
 			} else {
 				userName = user.displayName || user.email;
+			}
 			}
 
 			const messagesRef = collection(db, 'masterMessages');
