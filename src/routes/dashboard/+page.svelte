@@ -1,7 +1,7 @@
 <script>
 	import { userStore } from '$lib/stores.js';
 	import { auth, db } from '$lib/firebase.js';
-	import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+	import { doc, getDoc, collection, getDocs, onSnapshot, query, where } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { signOut } from 'firebase/auth';
 	import { goto } from '$app/navigation';
@@ -20,7 +20,7 @@
 		try {
 			const user = $userStore;
 			const adminDocRef = doc(db, 'adminUsers', user.uid);
-			const adminDoc = await getDoc(adminDocRef);
+			const adminDoc = await getDoc(adminDocRef);		
 			isAdmin = adminDoc.exists();
 
 			const sheetDocRef = doc(db, 'users', user.uid, 'characterSheets', 'mySheet');
@@ -32,6 +32,21 @@
 			}
 		} catch (error) {
 			console.error(error);
+		}
+
+		let unsubscribeListener = null;
+		const messagesRef = collection(db, 'masterMessages');
+		const repliesToMeQuery = query(messagesRef, where('recipientId', '==', user.uid));
+		unsubscribeListener = onSnapshot(repliesToMeQuery, (snapshot) => {
+			let msg = snapshot.docChanges()[0];
+			if(msg.change.type === "added"){
+				const data = msg.change.doc.data();
+				alert(`Você recebeu uma mensagem de ${data.senderName}`);
+			}
+		});
+
+		return () => {
+			if(unsubscribeListener) unsubscribeListener();
 		}
 	});
 
