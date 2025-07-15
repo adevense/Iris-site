@@ -34,13 +34,11 @@
 
 			if(isAdmin){
 				const messagesRef = collection(db, 'masterMessages');
-				const repliesToMeQuery = query(messagesRef);
+				const repliesToMeQuery = query(messagesRef, where('senderId', '!=', user.uid));
 				unsubscribeListener = onSnapshot(repliesToMeQuery, (snapshot) => {
 					const msg = snapshot.docChanges()[0];
-					console.log(msg)
 					if(msg && msg.type == "added"){
 						const data = msg.doc.data();		
-						console.log(data)
 						alert(`Você recebeu uma mensagem de ${data.senderName}`);
 					}
 				});
