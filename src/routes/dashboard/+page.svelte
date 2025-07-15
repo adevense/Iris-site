@@ -17,6 +17,7 @@
 	let isAdmin = false;
 
 	onMount(async () => {
+		let unsubscribeListener = null;
 		try {
 			const user = $userStore;
 			const adminDocRef = doc(db, 'adminUsers', user.uid);
@@ -30,20 +31,20 @@
 			} else {
 				userName = user.displayName || user.email;
 			}
+
+			const messagesRef = collection(db, 'masterMessages');
+			const repliesToMeQuery = query(messagesRef, where('recipientId', '==', user.uid));
+			unsubscribeListener = onSnapshot(repliesToMeQuery, (snapshot) => {
+				let msg = snapshot.docChanges()[0];
+				if(msg.change.type === "added"){
+					const data = msg.change.doc.data();
+					alert(`Você recebeu uma mensagem de ${data.senderName}`);
+				}
+			});
 		} catch (error) {
 			console.error(error);
 		}
-
-		let unsubscribeListener = null;
-		const messagesRef = collection(db, 'masterMessages');
-		const repliesToMeQuery = query(messagesRef, where('recipientId', '==', user.uid));
-		unsubscribeListener = onSnapshot(repliesToMeQuery, (snapshot) => {
-			let msg = snapshot.docChanges()[0];
-			if(msg.change.type === "added"){
-				const data = msg.change.doc.data();
-				alert(`Você recebeu uma mensagem de ${data.senderName}`);
-			}
-		});
+		
 
 		return () => {
 			if(unsubscribeListener) unsubscribeListener();
