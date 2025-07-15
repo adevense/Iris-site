@@ -36,9 +36,9 @@
 			const repliesToMeQuery = query(messagesRef, where('recipientId', '==', user.uid));
 			unsubscribeListener = onSnapshot(repliesToMeQuery, (snapshot) => {
 				const msg = snapshot.docChanges()[0];
+				console.log(msg)
 				if(msg){
-					const data = msg.change.doc.data();
-					console.log(data)
+					const data = msg.change.doc.data();		
 					alert(`Você recebeu uma mensagem de ${data.senderName}`);
 				}
 			});
