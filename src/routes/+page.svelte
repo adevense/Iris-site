@@ -41,7 +41,7 @@
                 <center>
                     <button class="btn btn-primary mb-3" style="width:98%;" onclick={handleLogin}>Entrar</button>
                     <p style="color:red;">{errorMsg}</p>
-                    <p>Não tem uma conta? <a href="/registrar">Cadastre-se aqui</a></p>
+                    <p>Não tem uma conta? <a href="/Iris-site/registrar">Cadastre-se aqui</a></p>
                 </center>
             </div>
         </div>

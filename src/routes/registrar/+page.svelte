@@ -56,7 +56,7 @@
                 <center>
                     <button class="btn btn-primary mb-3" style="width:98%;" onclick={handleRegister}>Registrar</button>
                     <p style="color:red;">{errorMsg}</p>
-                    <p>Já tem uma conta? <a href="/">Faça login aqui</a></p>
+                    <p>Já tem uma conta? <a href="/Iris-site">Faça login aqui</a></p>
                 </center>
             </div>
         </div>

@@ -13,7 +13,7 @@
     import { onAuthStateChanged } from 'firebase/auth';
 	import { goto } from '$app/navigation';
     let { children } = $props()
-    const publicRoutes = ['/', '/registrar']
+    const publicRoutes = ['/Iris-site', '/registrar']
 
     if(browser){
         theme.subscribe(value => {
@@ -38,7 +38,7 @@
 
     $effect(() => {
         if(!$userStore && !publicRoutes.includes(page.url.pathname)){
-            goto('/Iris-site/')
+            goto('/Iris-site')
         } else if($userStore && publicRoutes.includes(page.url.pathname)){
             goto('/Iris-site/dashboard')
         }

@@ -25,7 +25,7 @@
 
     async function handleLogout() {
 		await signOut(auth);
-		await goto('/Iris-site/');
+		await goto('/Iris-site');
 	}
 </script>
 
