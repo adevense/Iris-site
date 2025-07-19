@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Iris OP</string>
+    <string name="title_activity_main">Iris OP</string>
+    <string name="package_name">com.adevense.github.io.irisop</string>
+    <string name="custom_url_scheme">com.adevense.github.io.irisop</string>
+</resources>
