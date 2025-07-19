@@ -11,7 +11,6 @@
 	import { doc, getDoc, onSnapshot, query, collectionGroup, getDocs, setDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { signOut } from 'firebase/auth';
-	import { goto } from '$app/navigation';
 
     tab.subscribe(() => {
         chatIdOpen.update(v => v = null)

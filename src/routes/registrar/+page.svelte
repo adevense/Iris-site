@@ -21,7 +21,7 @@
         try {
             await setPersistence(auth, browserLocalPersistence);
             await createUserWithEmailAndPassword(auth, email, senha);
-            await goto('/dashboard');
+            await goto('/Iris-site/dashboard');
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 errorMsg = 'Este e-mail já está em uso.';

@@ -14,7 +14,7 @@
         try {
             await setPersistence(auth, browserLocalPersistence);
             await signInWithEmailAndPassword(auth, email, senha);
-            goto('/dashboard'); 
+            goto('/Iris-site/dashboard'); 
         } catch (error) {
             if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
                 errorMsg = 'E-mail ou senha inválidos.';

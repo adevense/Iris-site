@@ -38,9 +38,9 @@
 
     $effect(() => {
         if(!$userStore && !publicRoutes.includes(page.url.pathname)){
-            goto('/')
+            goto('/Iris-site')
         } else if($userStore && publicRoutes.includes(page.url.pathname)){
-            goto('/dashboard')
+            goto('/Iris-site/dashboard')
         }
     })
 </script>   
