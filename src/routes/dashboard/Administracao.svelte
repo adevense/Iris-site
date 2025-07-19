@@ -50,9 +50,11 @@
 
 	async function handleSaveTimeDate() {
 		const timeRef = doc(db, 'campaignTimeDate/current');
+		const parts = campaignDateInput.split('-') 
+		if(campaignDateInput != "") campaignDateInput = `${parts[2]}-${parts[1]}-${parts[0]}`
 		await setDoc(
 			timeRef,
-			{ campaignDate: campaignDateInput, campaignTime: campaignTimeInput },
+			{ campaignDate: campaignDateInput != "" ? campaignDateInput : displayCampaignDate, campaignTime: campaignTimeInput != "" ? campaignTimeInput : displayCampaignTime },
 			{ merge: true }
 		);
 		message = 'Hora/Data da campanha atualizada!';
@@ -74,136 +76,65 @@
 	}
 </script>
 
-<section id="admin-content" class="content-section active">
-	<h2>Área de Administração</h2>
-	{#if message}<p class="save-message" style="display:block;">{message}</p>{/if}
+<section class="container" style="margin-top:10dvh; margin-bottom:10dvh;">
+	<h2 class="mb-4">Área de Administração</h2>
 
-	<div class="admin-section-item">
-		<h3>Hora e Data da Campanha</h3>
-		<div class="current-time-display">
-			<p>Data Atual: <strong>{displayCampaignDate}</strong></p>
-			<p>Hora Atual: <strong>{displayCampaignTime}</strong></p>
+	{#if message}
+		<div class="alert alert-success" role="alert">
+			{message}
 		</div>
-		<div class="time-date-controls">
-			<div class="input-group">
-				<label for="campaignDateInput">Definir Data:</label><input
-					type="date"
-					id="campaignDateInput"
-					bind:value={campaignDateInput}
-				/>
+	{/if}
+
+	<div class="card mb-4">
+		<div class="card-body">
+			<h3 class="card-title h5">Hora e Data da Campanha</h3>
+			<div class="p-3 my-3 text-center bg-body-tertiary rounded">
+				<p class="mb-1">Data Atual: <strong class="text-primary">{displayCampaignDate}</strong></p>
+				<p class="mb-0">Hora Atual: <strong class="text-primary">{displayCampaignTime}</strong></p>
 			</div>
-			<div class="input-group">
-				<label for="campaignTimeInput">Definir Hora:</label><input
-					type="time"
-					id="campaignTimeInput"
-					bind:value={campaignTimeInput}
-				/>
-			</div>
-		</div>
-		<button on:click={handleSaveTimeDate}>Salvar Hora/Data</button>
-	</div>
-
-	<div class="admin-section-item">
-		<h3>Publicar Resumo de Sessão</h3>
-		<div class="input-group">
-			<label for="sessionSummaryTitle">Título:</label><input
-				type="text"
-				id="sessionSummaryTitle"
-				bind:value={summaryTitle}
-			/>
-		</div>
-		<div class="input-group">
-			<label for="sessionSummaryContent">Conteúdo:</label><textarea
-				id="sessionSummaryContent"
-				bind:value={summaryContent}
-			></textarea>
-		</div>
-		<button on:click={handleSaveSummary}>Publicar Resumo</button>
-	</div>
-
-	<div class="admin-section-item">
-		<h3>Jogadores e Personagens</h3>
-		<div id="playersCharactersList">
-			{#each players as player (player.userId)}
-				<div class="player-character-item">
-					<div>
-						<strong>Jogador:</strong>
-						{player.playerName || 'N/A'}<br /><strong>Personagem:</strong>
-						{player.characterName || 'N/A'}
-					</div>
-					<span>UID: {player.userId}</span>
+			<div class="row g-3 mb-3">
+				<div class="col-md-6">
+					<label for="campaignDateInput" class="form-label">Definir Data:</label>
+					<input type="date" class="form-control" id="campaignDateInput" bind:value={campaignDateInput} />
 				</div>
-			{/each}
+				<div class="col-md-6">
+					<label for="campaignTimeInput" class="form-label">Definir Hora:</label>
+					<input type="time" class="form-control" id="campaignTimeInput" bind:value={campaignTimeInput} />
+				</div>
+			</div>
+			<button class="btn btn-primary" on:click={handleSaveTimeDate}>Salvar Hora/Data</button>
+		</div>
+	</div>
+
+	<div class="card mb-4">
+		<div class="card-body">
+			<h3 class="card-title h5">Publicar Resumo de Sessão</h3>
+			<div class="mb-3">
+				<label for="sessionSummaryTitle" class="form-label">Título:</label>
+				<input type="text" class="form-control" id="sessionSummaryTitle" bind:value={summaryTitle} />
+			</div>
+			<div class="mb-3">
+				<label for="sessionSummaryContent" class="form-label">Conteúdo:</label>
+				<textarea class="form-control" id="sessionSummaryContent" rows="5" bind:value={summaryContent}></textarea>
+			</div>
+			<button class="btn btn-primary" on:click={handleSaveSummary}>Publicar Resumo</button>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-body">
+			<h3 class="card-title h5">Jogadores e Personagens</h3>
+			<div class="list-group" style="max-height: 400px; overflow-y: auto;">
+				{#each players as player (player.userId)}
+					<div class="list-group-item d-flex justify-content-between align-items-center">
+						<div>
+							<span class="fw-bold">{player.characterName || 'N/A'}</span>
+							<small class="d-block text-muted">Jogador: {player.playerName || 'N/A'}</small>
+						</div>
+						<span class="badge bg-secondary rounded-pill">UID: {player.userId}</span>
+					</div>
+				{/each}
+			</div>
 		</div>
 	</div>
 </section>
-
-<style>
-	.admin-section-item {
-		background-color: #fdfdfd;
-		border: 1px solid #e9e9e9;
-		border-radius: 10px;
-		padding: 20px;
-		margin-bottom: 20px;
-	}
-	h3 {
-		color: #2c3e50;
-		margin-top: 0;
-		border-bottom: 1px solid #f0f0f0;
-		padding-bottom: 10px;
-	}
-	.input-group {
-		margin-bottom: 15px;
-	}
-	label {
-		display: block;
-		margin-bottom: 5px;
-		font-weight: 600;
-	}
-	input,
-	textarea {
-		width: 100%;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		box-sizing: border-box;
-	}
-	textarea {
-		min-height: 120px;
-	}
-	button {
-		padding: 10px 20px;
-		border: none;
-		border-radius: 5px;
-		background-color: #007bff;
-		color: white;
-	}
-	.save-message {
-		margin: 10px 0;
-		font-weight: bold;
-		color: #28a745;
-	}
-	.current-time-display {
-		background-color: #f0f8ff;
-		text-align: center;
-		padding: 20px;
-		border-radius: 8px;
-		margin-bottom: 20px;
-	}
-	.time-date-controls {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 20px;
-		margin-bottom: 15px;
-	}
-	#playersCharactersList {
-		max-height: 400px;
-		overflow-y: auto;
-	}
-	.player-character-item {
-		display: flex;
-		justify-content: space-between;
-		padding: 10px 0;
-		border-bottom: 1px solid #eee;
-	}
-</style>
