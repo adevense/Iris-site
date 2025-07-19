@@ -13,7 +13,7 @@
     import { onAuthStateChanged } from 'firebase/auth';
 	import { goto } from '$app/navigation';
     let { children } = $props()
-    const publicRoutes = ['/Iris-site/', '/registrar']
+    const publicRoutes = ['/Iris-site/', '/Iris-site/registrar']
 
     if(browser){
         theme.subscribe(value => {
