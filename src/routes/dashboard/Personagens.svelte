@@ -44,6 +44,7 @@
             return
         }
         personagens[idEditando] = { nome: nome, descricao: desc, imagem: url, visivel: visibility }
+        idEditando = null
         nome = ""
         desc = ""
         url = ""
