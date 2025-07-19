@@ -1,36 +1,63 @@
 <script>
-    import '$lib/style.css';
-	import { onMount } from 'svelte';
-    import { auth } from '$lib/firebase.js'; 
-    import { userStore } from '$lib/stores.js';
-    import { onAuthStateChanged } from 'firebase/auth';
-    import { tick } from 'svelte';
-	import { goto } from '$app/navigation';
+    import 'bootstrap/dist/js/bootstrap.js'
+    import 'bootstrap/dist/css/bootstrap.css';
+    import 'bootstrap-icons/font/bootstrap-icons.css'
+    import '../routes/styles/theme.css' 
+	import NavBar from '$lib/components/NavBar.svelte'
+    import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+    import { auth } from '$lib/firebase';
+    import { theme, userStore } from '$lib/appData';
+	import { browser } from '$app/environment';
     import { page } from '$app/state';
-    const publicRoutes = ['/', '/registro']
+	import { onMount } from 'svelte';
+    import { onAuthStateChanged } from 'firebase/auth';
+	import { goto } from '$app/navigation';
+    let { children } = $props()
+    const publicRoutes = ['/', '/registrar']
 
-	onMount(() => {
+    if(browser){
+        theme.subscribe(value => {
+            document.documentElement.setAttribute('data-bs-theme', value)
+        })
+    }
+
+    onMount(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 $userStore = {
                     uid: user.uid,
                     email: user.email,
                     displayName: user.displayName,
-                };
+                }
             } else {
-                $userStore = null;
+                $userStore = null
             }
-        });
-        return () => unsubscribe();
-    });
+        })
+        return () => unsubscribe()
+    })
 
-    $: {
-        if ($userStore === null){
-            goto('/Iris-site');
+    $effect(() => {
+        if(!$userStore && !publicRoutes.includes(page.url.pathname)){
+            goto('/')
+        } else if($userStore && publicRoutes.includes(page.url.pathname)){
+            goto('/dashboard')
         }
-    }
-</script>
+    })
+</script>   
 
-{#if $userStore || publicRoutes.includes(page.route.id)}
-    <slot />
-{/if}
+<svelte:head>
+    <title>Iris OP</title>
+</svelte:head>
+
+<div class="container-fluid">
+    {#if $userStore || publicRoutes.includes(page.url.pathname)}
+        {#if !publicRoutes.includes(page.url.pathname)}
+            <NavBar/>
+        {:else}
+            <div style="position: absolute; right: 0px;">
+                <ThemeToggle/>
+            </div>
+        {/if}
+        {@render children()}
+    {/if}
+</div>

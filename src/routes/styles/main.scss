@@ -1,0 +1,58 @@
+@import "../../../node_modules/bootstrap/scss/functions";
+
+$primary: #6f42c1; 
+$secondary: #6c757d;
+$body-bg: #f8f9fa;
+$body-color: #212529;
+
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/variables-dark";
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+$parchment:   #fbf8f2; 
+$dark-sepia:  #584b42; 
+$slate-blue:  #3a869d; 
+$soft-gray:   #8a99a4; 
+$earth-green: #739e4a; 
+$terracotta:  #cb4b16; 
+$muted-violet:#6c71c4;  
+
+@include color-mode(dark, true) {
+  --bs-primary: #{lighten($primary, 10%)};
+  --bs-body-bg: #{$gray-900};
+  --bs-body-color: #{$gray-300};
+  --bs-emphasis-color: #{$white};
+  --bs-secondary-bg: #{$gray-800};
+  --bs-tertiary-bg: #{darken($gray-900, 5%)};
+  --bs-border-color: #{rgba($white, 0.1)};
+  --bs-heading-color: #{$white};
+}
+
+@include color-mode(light, true) {
+  --bs-primary: #{lighten($parchment, 10%)};
+  --bs-body-bg: #{$parchment};
+  --bs-body-color: #{$dark-sepia};
+  --bs-emphasis-color: #{$white};
+  --bs-secondary-bg: #{$soft-gray};
+  --bs-border-color: #{rgba($dark-sepia, 0.2)};
+}
+
+body {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+@font-face {
+    font-family: 'font';
+    src: url('../../lib/font.otf');
+}
+
+* {
+    font-family: 'font';
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
