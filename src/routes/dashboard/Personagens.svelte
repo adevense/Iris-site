@@ -20,6 +20,14 @@
         return () => unsub()
 	})
 
+    function moverPersonagem(i, direcao){
+        if(i == 0 && direcao == -1 || i == personagens.length-1 && direcao == 1) return
+        let aux = personagens[i+direcao]
+        personagens[i+direcao] = personagens[i]
+        personagens[i] = aux
+        save()
+    }
+
     function editarPersonagem(i){
         idEditando = i
         nome = personagens[i].nome
@@ -85,7 +93,7 @@
 				<div class="row">
 					{#each personagens as personagem, i}
 						{#if personagem.visivel || isAdmin}
-                            <CharCard img={personagem.imagem} name={personagem.nome} desc={personagem.descricao} {isAdmin} indice={i} {editarPersonagem} {removerPersonagem} />
+                            <CharCard img={personagem.imagem} name={personagem.nome} desc={personagem.descricao} {isAdmin} indice={i} {editarPersonagem} {removerPersonagem} {moverPersonagem} />
                         {/if}
 					{/each}
 				</div>
